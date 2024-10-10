@@ -14,8 +14,10 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class BookType extends AbstractType
 {
@@ -43,6 +45,13 @@ class BookType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => true,
                 'by_reference' => false,
+            ])
+            ->add('certification', CheckboxType::class, [
+                'mapped' => false,
+                'label' => "Je certifie l'exactitude des informations fournies",
+                'constraints' => [
+                    new Assert\IsTrue(message: "Vous devez cocher la case pour ajouter un livre."),
+                ],
             ])
         ;
     }
