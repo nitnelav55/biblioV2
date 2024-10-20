@@ -37,12 +37,18 @@
         </div>
 
         <br>
+        <div class="d-flex">
 
-{{ knp_pagination_render(books)}}
-
-
+            {% if page > 1 %}
+                <a href="{{ path('app_admin_book_index', {page: page-1}) }}" class= "btn btn-secondary">Page précédente </a>
+            {% endif %}
+            &nbsp;
+            {% if page < maxPage %}
+                <a href="{{ path('app_admin_book_index', {page: page+1}) }}" class= "btn btn-secondary">Page suivante </a>
+            {% endif %}
         </div>
 
     </div>
 </section>
+<img src="{{ asset('Huisclos.jpg') }}" alt="Huisclos"/>
 {% endblock %}

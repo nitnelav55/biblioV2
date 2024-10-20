@@ -8,32 +8,26 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
-use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 
 /**
  * @extends ServiceEntityRepository<Book>
  */
-class BookRepository extends ServiceEntityRepository
+class OldBookRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginator)
     {
         parent::__construct($registry, Book::class);
     }
 
-    public function paginateBook(Int $page, Int $limit): SlidingPagination/*: Paginator*/
+    public function paginateBook(Int $page, Int $limit): Paginator
     {
-        return $this->paginator->paginate(
-            $this->createQueryBuilder('r'),
-            $page,
-            $limit
-        );
-        /*return new Paginator($this
+        return new Paginator($this
         ->createQueryBuilder('r')
         ->setFirstResult(($page - 1) * $limit)
         ->setMaxResults($limit)
         ->getQuery()
         ->setHint(Paginator::HINT_ENABLE_DISTINCT, false), false
-        );*/
+        );
     }
 
     //    /**

@@ -19,11 +19,53 @@ class BookController extends AbstractController
     #[Route('', name: 'app_admin_book_index', methods: ['GET'])]
     public function index(Request $request, BookRepository $repository): Response
     {
-        $books = $repository->findAll();
+        //$books = $repository->findAll();
+        $page = $request->query->getInt('page', 1);
+        $limit = 2;
+        $books = $repository->paginateBook($page, $limit);
+        $maxPage = ceil($books->getTotalItemCount() / $limit);
+        //dd($books->count());
 
         return $this->render('admin/book/index.html.twig', [
             'books' => $books,
+            'maxPage' => $maxPage,
+            'page' => $page,
         ]);
+    }
+
+
+    #[Route('/list', name: 'app_admin_book_list', methods: ['GET'])]
+    public function list(Request $request, BookRepository $repository): Response
+    {
+        //$books = $repository->findAll();
+        $page = $request->query->getInt('page', 1);
+        $limit = 4;
+        $books = $repository->paginateBook($page, $limit);
+        $maxPage = ceil($books->getTotalItemCount() / $limit);
+        //dd($books->count());
+
+        return $this->render('admin/book/list.html.twig', [
+            'books' => $books,
+            'maxPage' => $maxPage,
+            'page' => $page,
+        ]);
+    }
+
+    #[Route('/{id}/delete', name: 'app_admin_book_delete', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function delete(?Book $book, Request $request, EntityManagerInterface $manager): Response
+    {
+
+        if ($book) {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        }
+
+        $book ??= new Book();
+
+        $manager->remove($book);
+        $manager->flush();
+
+        return $this->redirectToRoute('app_admin_book_list');
+
     }
 
     #[IsGranted('ROLE_AJOUT_DE_LIVRE')]

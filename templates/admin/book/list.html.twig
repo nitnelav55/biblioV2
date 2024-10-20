@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue des livres{% endblock %}
+
+{% block body %}
+<section class="py-5">
+<br><br>
+    <table class="table table-striped" >    
+            {% for book in books %}
+            <tr>
+                <td>
+                    <!-- Couverture du livre-->
+                    {{ book.cover }}
+                    <!-- Détails du livre-->
+                <td>                     
+                    <!-- Titre du livre-->
+                    {{ book.title }}
+                </td> 
+                <td> 
+                    <!-- Auteurs du livre-->
+                    {{ book.authors|map(a => a.name)|join(', ') }}           
+                </td>
+                <td>
+                    <!-- Action-->
+                    <a class="btn btn-outline-dark mt-auto" href="{{ path('app_admin_book_show', {id: book.id}) }}">Editer</a>
+                </td>
+                <td>
+                    <!-- Action-->
+                    <a class="btn btn-outline-dark mt-auto" href="{{ path('app_admin_book_delete', {id: book.id}) }}">Supprimer</a>
+                </td>
+            </tr>
+    {% else %}
+        <p>Aucun livre actuellement</p>
+     {% endfor %}
+        
+
+    </table>
+
+    <br>
+
+    {{ knp_pagination_render(books)}}
+</section>
+{% endblock %}
