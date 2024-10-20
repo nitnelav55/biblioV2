@@ -23,7 +23,7 @@ class BookRepository extends ServiceEntityRepository
     public function paginateBook(Int $page, Int $limit): SlidingPagination/*: Paginator*/
     {
         return $this->paginator->paginate(
-            $this->createQueryBuilder('r'),
+            $this->createQueryBuilder('b'),
             $page,
             $limit
         );

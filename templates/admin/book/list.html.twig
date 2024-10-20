@@ -5,7 +5,16 @@
 {% block body %}
 <section class="py-5">
 <br><br>
-    <table class="table table-striped" >    
+    <table class="table table-striped" > 
+        <thead>
+        <tr>
+            <th>Couverture</th>
+            <th>{{ knp_pagination_sortable(books,'Titre', 'b.title') }}</th>
+            <th>Author</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>  
             {% for book in books %}
             <tr>
                 <td>
